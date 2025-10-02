@@ -1,0 +1,3 @@
+[submodule "references/MangaViewAndroid"]
+	path = references/MangaViewAndroid
+	url = https://github.com/sanqbear/MangaViewAndroid
