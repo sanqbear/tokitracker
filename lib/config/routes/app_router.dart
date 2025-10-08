@@ -5,6 +5,9 @@ import 'package:injectable/injectable.dart';
 import 'route_names.dart';
 import 'route_paths.dart';
 import '../../core/storage/local_storage.dart';
+import '../../features/authentication/presentation/pages/login_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
+import '../../features/home/presentation/pages/home_page.dart';
 
 /// Application router configuration
 @singleton
@@ -36,7 +39,7 @@ class AppRouter {
       GoRoute(
         path: RoutePaths.login,
         name: RouteNames.login,
-        builder: (context, state) => _buildPlaceholder('Login'),
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         path: RoutePaths.captcha,
@@ -51,7 +54,7 @@ class AppRouter {
       GoRoute(
         path: RoutePaths.home,
         name: RouteNames.home,
-        builder: (context, state) => _buildPlaceholder('Home'),
+        builder: (context, state) => const HomePage(),
       ),
 
       // Manga Detail
@@ -166,7 +169,7 @@ class AppRouter {
       GoRoute(
         path: RoutePaths.settings,
         name: RouteNames.settings,
-        builder: (context, state) => _buildPlaceholder('Settings'),
+        builder: (context, state) => const SettingsPage(),
       ),
 
       // Folder Select
