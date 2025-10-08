@@ -1,0 +1,34 @@
+# Build configuration for code generation
+targets:
+  $default:
+    builders:
+      # Injectable code generation
+      injectable_generator:injectable_builder:
+        enabled: true
+        options:
+          # Generate relative imports
+          auto_register: true
+          # Allow classes without @injectable annotation if they have @module
+          class_name_pattern: "^_?[A-Z][a-zA-Z0-9]*$"
+
+      # JSON serialization code generation
+      json_serializable:
+        enabled: true
+        options:
+          # Automatically generate fromJson and toJson
+          any_map: false
+          checked: false
+          create_factory: true
+          create_to_json: true
+          disallow_unrecognized_keys: false
+          explicit_to_json: false
+          field_rename: none
+          ignore_unannotated: false
+          include_if_null: true
+
+      # Hive type adapter generation
+      hive_generator:hive_generator:
+        enabled: true
+        options:
+          # Generate Hive type adapters
+          auto_register: true
