@@ -1,0 +1,39 @@
+---
+description: Guidelines for managing Flutter dependencies and packages
+---
+
+# Dependency Management Guidelines
+
+## Package Selection
+- Prefer official Flutter packages when available
+- Check package popularity and maintenance status on pub.dev
+- Use packages with good documentation and examples
+- Avoid packages with security vulnerabilities
+
+## Common Dependencies for Manga App
+- **State Management**: `provider`, `riverpod`, or `bloc`
+- **HTTP Client**: `dio` or `http`
+- **Local Storage**: `shared_preferences`, `sqflite`, `hive`
+- **Image Loading**: `cached_network_image`, `flutter_cache_manager`
+- **Navigation**: `go_router` for advanced routing
+- **UI Components**: `flutter_staggered_grid_view`, `pull_to_refresh`
+- **File Management**: `path_provider`, `permission_handler`
+- **Networking**: `connectivity_plus`
+
+## Version Management
+- Pin major versions in [pubspec.yaml](mdc:pubspec.yaml)
+- Use `flutter pub upgrade` carefully
+- Test thoroughly after dependency updates
+- Keep dependencies up to date for security
+
+## Platform-Specific Dependencies
+- Use `platform` package for platform detection
+- Implement platform-specific features with method channels
+- Handle platform differences gracefully
+- Test on all target platforms
+
+## Performance Considerations
+- Minimize bundle size by removing unused dependencies
+- Use `flutter analyze` to check for unused imports
+- Consider lazy loading for heavy dependencies
+- Monitor app size and performance impact

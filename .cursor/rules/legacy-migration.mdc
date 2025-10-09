@@ -1,0 +1,40 @@
+---
+description: Guidelines for migrating features from the legacy Android app
+---
+
+# Legacy Android App Migration Guidelines
+
+## Reference Analysis
+The legacy app in [references/MangaViewAndroid](mdc:references/MangaViewAndroid) contains:
+- **Java Activities**: Main app logic in `app/src/main/java/ml/melun/`
+- **XML Layouts**: UI definitions in `app/src/main/res/layout/`
+- **Resources**: Images, icons, and strings in `app/src/main/res/`
+- **Manifest**: App configuration in `app/src/main/AndroidManifest.xml`
+
+## Migration Strategy
+1. **Feature Mapping**: Map each Android Activity to Flutter screens
+2. **UI Translation**: Convert XML layouts to Flutter widgets
+3. **Logic Porting**: Translate Java business logic to Dart
+4. **Resource Migration**: Convert Android resources to Flutter assets
+5. **Platform Adaptation**: Adapt Android-specific features for cross-platform
+
+## Key Activities to Migrate
+- `MainActivity` → Main dashboard screen
+- `ViewerActivity` → Manga reader screen
+- `SearchActivity` → Search functionality
+- `SettingsActivity` → Settings screen
+- `LoginActivity` → Authentication flow
+
+## Flutter Equivalents
+- **Activities** → Flutter Screens (StatelessWidget/StatefulWidget)
+- **Fragments** → Flutter Widgets
+- **RecyclerView** → ListView.builder or CustomScrollView
+- **SharedPreferences** → SharedPreferences package or secure storage
+- **AsyncTask** → Future/async-await patterns
+- **Intent** → Navigator.push with route parameters
+
+## Asset Migration
+- Convert Android drawable resources to Flutter assets
+- Use appropriate image formats (WebP, PNG)
+- Implement responsive design for different screen sizes
+- Maintain consistent theming across platforms

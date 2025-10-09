@@ -1,0 +1,28 @@
+---
+alwaysApply: true
+---
+
+# TokiTracker Flutter Project Overview
+
+This is a Flutter project that aims to rewrite the legacy Android application located in [references/MangaViewAndroid](mdc:references/MangaViewAndroid). The project is called "TokiTracker" and is designed to provide a modern, cross-platform manga reading experience.
+
+## Project Purpose
+- **Legacy Migration**: Rewriting the existing Android manga reader app using Flutter
+- **Cross-Platform**: Support for Android, iOS, Web, Windows, macOS, and Linux
+- **Modern Architecture**: Implementing Flutter best practices and modern UI/UX patterns
+- **Feature Parity**: Maintaining all functionality from the original Android app
+
+## Key Features (Based on Legacy App Analysis)
+- Manga browsing and reading
+- Search functionality with advanced filters
+- User authentication and favorites
+- Download management
+- Comments and social features
+- Settings and customization
+- Multi-language support
+
+## Project Structure
+- **Entry Point**: [lib/main.dart](mdc:lib/main.dart)
+- **Dependencies**: [pubspec.yaml](mdc:pubspec.yaml)
+- **Legacy Reference**: [references/MangaViewAndroid](mdc:references/MangaViewAndroid)
+- **Platform Support**: Android, iOS, Web, Windows, macOS, Linux

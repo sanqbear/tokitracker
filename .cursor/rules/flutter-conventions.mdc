@@ -1,0 +1,40 @@
+---
+globs: *.dart
+---
+
+# Flutter Development Conventions
+
+## Code Style and Formatting
+- Always use `dart format` to maintain consistent code formatting
+- Follow Dart/Flutter linting rules defined in [analysis_options.yaml](mdc:analysis_options.yaml)
+- Use meaningful variable and function names with camelCase
+- Prefer `const` constructors when possible for better performance
+- Use trailing commas in widget constructors for better git diffs
+
+## Widget Structure
+- Keep widgets small and focused on single responsibility
+- Use `StatelessWidget` for widgets that don't need to maintain state
+- Use `StatefulWidget` only when necessary for state management
+- Extract complex widgets into separate files
+- Use `const` constructors for widgets that don't change
+
+## File Organization
+- Place screens in `lib/screens/` directory
+- Place widgets in `lib/widgets/` directory
+- Place models in `lib/models/` directory
+- Place services in `lib/services/` directory
+- Place utilities in `lib/utils/` directory
+- Place constants in `lib/constants/` directory
+
+## State Management
+- Use Provider, Riverpod, or Bloc for state management
+- Keep business logic separate from UI code
+- Use immutable data models where possible
+- Implement proper error handling and loading states
+
+## Performance Best Practices
+- Use `ListView.builder` for large lists
+- Implement proper image caching and optimization
+- Use `const` widgets to prevent unnecessary rebuilds
+- Implement proper disposal of controllers and streams
+- Use `RepaintBoundary` for complex widgets when needed

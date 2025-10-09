@@ -1,0 +1,41 @@
+---
+globs: *.dart
+---
+
+# UI/UX Design Guidelines
+
+## Material Design 3
+- Use Material 3 design system for consistent theming
+- Implement proper color schemes with `ColorScheme.fromSeed()`
+- Use Material 3 components (AppBar, NavigationBar, etc.)
+- Follow Material Design accessibility guidelines
+
+## Responsive Design
+- Design for multiple screen sizes and orientations
+- Use `MediaQuery` for responsive layouts
+- Implement proper breakpoints for tablets and desktop
+- Test on different device sizes and orientations
+
+## Navigation Patterns
+- Use `Navigator` for screen transitions
+- Implement proper back button handling
+- Use `BottomNavigationBar` for main navigation
+- Consider `Drawer` for secondary navigation
+
+## Theming
+- Define consistent color palette in theme
+- Use `Theme.of(context)` for accessing theme data
+- Implement dark/light mode support
+- Create custom themes for brand consistency
+
+## Accessibility
+- Add semantic labels for screen readers
+- Ensure proper contrast ratios
+- Implement keyboard navigation support
+- Test with accessibility tools
+
+## Performance Considerations
+- Use `ListView.builder` for scrollable content
+- Implement proper image loading and caching
+- Use `RepaintBoundary` for complex widgets
+- Optimize animations and transitions

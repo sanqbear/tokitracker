@@ -1,0 +1,39 @@
+---
+globs: *.dart
+---
+
+# Flutter Architecture Patterns
+
+## Clean Architecture Principles
+- **Presentation Layer**: UI widgets and screens in `lib/presentation/`
+- **Domain Layer**: Business logic and entities in `lib/domain/`
+- **Data Layer**: Repositories and data sources in `lib/data/`
+
+## Folder Structure
+```
+lib/
+├── core/           # Core utilities, constants, and base classes
+├── data/           # Data layer (repositories, data sources, models)
+├── domain/         # Domain layer (entities, use cases, repositories interfaces)
+├── presentation/   # Presentation layer (screens, widgets, view models)
+├── services/       # External services (API, storage, etc.)
+└── utils/          # Utility functions and helpers
+```
+
+## State Management
+- Use **Provider** or **Riverpod** for dependency injection
+- Implement **Repository Pattern** for data access
+- Use **Use Cases** for business logic
+- Keep UI components pure and stateless when possible
+
+## Error Handling
+- Implement global error handling with `ErrorWidget.builder`
+- Use `try-catch` blocks for async operations
+- Provide meaningful error messages to users
+- Log errors appropriately for debugging
+
+## Testing Strategy
+- Write unit tests for business logic
+- Write widget tests for UI components
+- Write integration tests for user flows
+- Maintain high test coverage for critical features

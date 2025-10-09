@@ -5,11 +5,22 @@ targets:
       # Injectable code generation
       injectable_generator:injectable_builder:
         enabled: true
+        generate_for:
+          # Only scan files with DI annotations, exclude constants, config, entities, models, states, events, errors
+          exclude:
+            - "lib/core/constants/**"
+            - "lib/core/error/**"
+            - "lib/config/routes/**"
+            - "lib/**/entities/**"
+            - "lib/**/models/**"
+            - "lib/**/bloc/*_state.dart"
+            - "lib/**/bloc/*_event.dart"
+            - "lib/**/presentation/pages/**"
+            - "lib/**/presentation/widgets/**"
+            - "lib/main.dart"
         options:
           # Generate relative imports
           auto_register: true
-          # Allow classes without @injectable annotation if they have @module
-          class_name_pattern: "^_?[A-Z][a-zA-Z0-9]*$"
 
       # JSON serialization code generation
       json_serializable:
