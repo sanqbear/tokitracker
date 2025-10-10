@@ -1,69 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../injection_container.dart';
+import '../bloc/home_bloc.dart';
+import '../bloc/home_event.dart';
+import '../widgets/comic_tab.dart';
+import '../widgets/webtoon_tab.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  HomeBloc? _homeBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+
+    // Listen to tab changes to load data for each tab
+    _tabController.addListener(_onTabChanged);
+  }
+
+  void _onTabChanged() {
+    if (!_tabController.indexIsChanging && _homeBloc != null) {
+      // Tab animation finished
+      if (_tabController.index == 0) {
+        _homeBloc!.add(const HomeComicDataRequested());
+      } else {
+        _homeBloc!.add(const HomeWebtoonDataRequested());
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('TokiTracker'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => context.push('/settings'),
-            tooltip: '설정',
+    return BlocProvider(
+      create: (context) {
+        _homeBloc = sl<HomeBloc>()..add(const HomeComicDataRequested());
+        return _homeBloc!;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('TokiTracker'),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: '만화'),
+              Tab(text: '웹툰'),
+            ],
           ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.book,
-              size: 100,
-              color: Colors.deepPurple,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'TokiTracker',
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '만화 트래커',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.grey,
-                  ),
-            ),
-            const SizedBox(height: 48),
-            ElevatedButton.icon(
-              onPressed: () => context.push('/login'),
-              icon: const Icon(Icons.login),
-              label: const Text('로그인'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            OutlinedButton.icon(
-              onPressed: () => context.push('/settings'),
-              icon: const Icon(Icons.settings),
-              label: const Text('설정'),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
-                ),
-              ),
-            ),
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: const [
+            ComicTab(),
+            WebtoonTab(),
           ],
         ),
       ),

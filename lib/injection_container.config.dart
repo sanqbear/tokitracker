@@ -35,6 +35,12 @@ import 'features/authentication/domain/usecases/login.dart' as _i466;
 import 'features/authentication/domain/usecases/logout.dart' as _i911;
 import 'features/authentication/domain/usecases/prepare_captcha.dart' as _i349;
 import 'features/authentication/presentation/bloc/auth_bloc.dart' as _i706;
+import 'features/home/data/datasources/home_remote_datasource.dart' as _i400;
+import 'features/home/data/repositories/home_repository_impl.dart' as _i689;
+import 'features/home/domain/repositories/home_repository.dart' as _i649;
+import 'features/home/domain/usecases/fetch_comic_home_data.dart' as _i940;
+import 'features/home/domain/usecases/fetch_webtoon_home_data.dart' as _i781;
+import 'features/home/presentation/bloc/home_bloc.dart' as _i123;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -63,12 +69,22 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i24.HttpClient>(),
           gh<_i482.LocalStorage>(),
         ));
+    gh.factory<_i400.HomeRemoteDataSource>(() => _i400.HomeRemoteDataSource(
+          gh<_i24.HttpClient>(),
+          gh<_i482.LocalStorage>(),
+        ));
+    gh.factory<_i649.HomeRepository>(
+        () => _i689.HomeRepositoryImpl(gh<_i400.HomeRemoteDataSource>()));
     gh.lazySingleton<_i877.AuthRepository>(() => _i446.AuthRepositoryImpl(
           remoteDataSource: gh<_i732.AuthRemoteDataSource>(),
           localDataSource: gh<_i976.AuthLocalDataSource>(),
         ));
     gh.lazySingleton<_i75.NetworkInfo>(
         () => _i75.NetworkInfoImpl(gh<_i895.Connectivity>()));
+    gh.factory<_i940.FetchComicHomeData>(
+        () => _i940.FetchComicHomeData(gh<_i649.HomeRepository>()));
+    gh.factory<_i781.FetchWebtoonHomeData>(
+        () => _i781.FetchWebtoonHomeData(gh<_i649.HomeRepository>()));
     gh.factory<_i605.CheckLoginStatus>(
         () => _i605.CheckLoginStatus(gh<_i877.AuthRepository>()));
     gh.factory<_i666.GetCurrentUser>(
@@ -77,6 +93,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i911.Logout>(() => _i911.Logout(gh<_i877.AuthRepository>()));
     gh.factory<_i349.PrepareCaptcha>(
         () => _i349.PrepareCaptcha(gh<_i877.AuthRepository>()));
+    gh.factory<_i123.HomeBloc>(() => _i123.HomeBloc(
+          gh<_i940.FetchComicHomeData>(),
+          gh<_i781.FetchWebtoonHomeData>(),
+        ));
     gh.factory<_i706.AuthBloc>(() => _i706.AuthBloc(
           prepareCaptcha: gh<_i349.PrepareCaptcha>(),
           login: gh<_i466.Login>(),
