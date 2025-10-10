@@ -47,6 +47,10 @@ class MangaRemoteDataSource {
       // Parse title details
       return _parseTitleDetail(document, id, baseMode, baseUrl);
     } on DioException catch (e) {
+      // Check if the error is a CaptchaRequiredException
+      if (e.error is CaptchaRequiredException) {
+        throw e.error as CaptchaRequiredException;
+      }
       throw NetworkException('Network error: ${e.message}');
     } catch (e) {
       if (e is CaptchaRequiredException) rethrow;
@@ -294,8 +298,13 @@ class MangaRemoteDataSource {
 
       return false;
     } on DioException catch (e) {
+      // Check if the error is a CaptchaRequiredException
+      if (e.error is CaptchaRequiredException) {
+        throw e.error as CaptchaRequiredException;
+      }
       throw NetworkException('Network error: ${e.message}');
     } catch (e) {
+      if (e is CaptchaRequiredException) rethrow;
       throw ServerException('Failed to toggle bookmark: $e');
     }
   }

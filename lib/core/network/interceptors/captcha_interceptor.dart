@@ -27,11 +27,26 @@ class CaptchaInterceptor extends Interceptor {
 
     // Check for 403 Forbidden (may also indicate captcha)
     if (response.statusCode == 403) {
+      // Try multiple methods to get the captcha URL
+      String? captchaUrl;
+
+      // 1. Check for Location header (some servers use this)
+      final location = response.headers.value('location');
+      if (location != null && location.isNotEmpty) {
+        captchaUrl = location;
+      }
+
+      // 2. Use the actual request URL that returned 403
+      // The WebView will load this URL and the server will show the captcha
+      if (captchaUrl == null || captchaUrl.isEmpty) {
+        captchaUrl = response.requestOptions.uri.toString();
+      }
+
       handler.reject(
         DioException(
           requestOptions: response.requestOptions,
           response: response,
-          error: CaptchaRequiredException('Captcha required (403 Forbidden)'),
+          error: CaptchaRequiredException(captchaUrl),
           type: DioExceptionType.badResponse,
         ),
       );

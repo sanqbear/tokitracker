@@ -34,7 +34,7 @@ class MangaRepositoryImpl implements MangaRepository {
       );
       return Right(titleDetail);
     } on CaptchaRequiredException catch (e) {
-      return Left(CaptchaFailure(e.message));
+      return Left(CaptchaFailure(e.captchaUrl, e.message));
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } on NetworkException catch (e) {

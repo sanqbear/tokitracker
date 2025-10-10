@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tokitracker/features/home/domain/entities/base_mode.dart';
 import 'package:tokitracker/features/manga/presentation/bloc/title_detail_bloc.dart';
 import 'package:tokitracker/features/manga/presentation/bloc/title_detail_event.dart';
@@ -94,8 +95,18 @@ class TitleDetailPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implement captcha handling
+                      onPressed: () async {
+                        // Navigate to captcha page
+                        final result = await context.push<bool>(
+                          '/captcha?url=${Uri.encodeComponent(state.url)}',
+                        );
+
+                        // If captcha succeeded, retry loading
+                        if (result == true && context.mounted) {
+                          context
+                              .read<TitleDetailBloc>()
+                              .add(const TitleDetailRefreshRequested());
+                        }
                       },
                       child: const Text('캡차 인증하기'),
                     ),

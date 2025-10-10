@@ -7,6 +7,12 @@ import '../../error/exceptions.dart';
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    // If the error is already a CaptchaRequiredException, pass it through
+    if (err.error is CaptchaRequiredException) {
+      handler.next(err);
+      return;
+    }
+
     AppException exception;
 
     switch (err.type) {

@@ -9,6 +9,7 @@ import 'package:tokitracker/injection_container.dart';
 
 /// Captcha verification page
 /// Corresponds to CaptchaActivity.java in Android app
+/// Now using flutter_inappwebview for cross-platform support (Android, iOS, Windows, macOS, Web)
 class CaptchaPage extends StatelessWidget {
   final String captchaUrl;
 
