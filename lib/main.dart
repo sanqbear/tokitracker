@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'core/storage/hive_storage.dart';
 import 'injection_container.dart';
 import 'config/routes/app_router.dart';
@@ -11,8 +13,14 @@ void main() async {
   final hiveStorage = HiveStorage();
   await hiveStorage.init();
 
-  // Configure dependency injection
-  await configureDependencies();
+  // Initialize CookieJar (needed for HttpClient)
+  final appDocDir = await getApplicationDocumentsDirectory();
+  final cookieJar = PersistCookieJar(
+    storage: FileStorage('${appDocDir.path}/.cookies/'),
+  );
+
+  // Configure dependency injection with pre-initialized CookieJar
+  await configureDependencies(cookieJar);
 
   runApp(const MyApp());
 }

@@ -8,6 +8,7 @@ import '../../core/storage/local_storage.dart';
 import '../../features/authentication/presentation/pages/login_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/setup/presentation/pages/first_time_setup_page.dart';
 
 /// Application router configuration
 @singleton
@@ -32,7 +33,7 @@ class AppRouter {
       GoRoute(
         path: RoutePaths.firstTime,
         name: RouteNames.firstTime,
-        builder: (context, state) => _buildPlaceholder('First Time Setup'),
+        builder: (context, state) => const FirstTimeSetupPage(),
       ),
 
       // Authentication

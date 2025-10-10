@@ -9,7 +9,6 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:connectivity_plus/connectivity_plus.dart' as _i895;
-import 'package:cookie_jar/cookie_jar.dart' as _i557;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -51,47 +50,40 @@ extension GetItInjectableX on _i174.GetIt {
     final storageModule = _$StorageModule();
     final dioModule = _$DioModule();
     gh.singleton<_i238.FileManager>(() => _i238.FileManager());
+    gh.singleton<_i355.HiveStorage>(() => _i355.HiveStorage());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => storageModule.provideSharedPreferences(),
       preResolve: true,
     );
-    gh.singleton<_i355.HiveStorage>(() => _i355.HiveStorage());
-    gh.lazySingletonAsync<_i557.CookieJar>(() => dioModule.provideCookieJar());
     gh.lazySingleton<_i895.Connectivity>(() => dioModule.provideConnectivity());
-    gh.singletonAsync<_i24.HttpClient>(
-        () async => _i24.HttpClient(await getAsync<_i557.CookieJar>()));
     gh.singleton<_i482.LocalStorage>(
         () => _i482.LocalStorage(gh<_i460.SharedPreferences>()));
     gh.factory<_i976.AuthLocalDataSource>(
         () => _i976.AuthLocalDataSource(gh<_i355.HiveStorage>()));
-    gh.factoryAsync<_i732.AuthRemoteDataSource>(
-        () async => _i732.AuthRemoteDataSource(
-              await getAsync<_i24.HttpClient>(),
-              gh<_i482.LocalStorage>(),
-            ));
-    gh.lazySingletonAsync<_i877.AuthRepository>(
-        () async => _i446.AuthRepositoryImpl(
-              remoteDataSource: await getAsync<_i732.AuthRemoteDataSource>(),
-              localDataSource: gh<_i976.AuthLocalDataSource>(),
-            ));
+    gh.factory<_i732.AuthRemoteDataSource>(() => _i732.AuthRemoteDataSource(
+          gh<_i24.HttpClient>(),
+          gh<_i482.LocalStorage>(),
+        ));
+    gh.lazySingleton<_i877.AuthRepository>(() => _i446.AuthRepositoryImpl(
+          remoteDataSource: gh<_i732.AuthRemoteDataSource>(),
+          localDataSource: gh<_i976.AuthLocalDataSource>(),
+        ));
     gh.lazySingleton<_i75.NetworkInfo>(
         () => _i75.NetworkInfoImpl(gh<_i895.Connectivity>()));
-    gh.factoryAsync<_i466.Login>(
-        () async => _i466.Login(await getAsync<_i877.AuthRepository>()));
-    gh.factoryAsync<_i605.CheckLoginStatus>(() async =>
-        _i605.CheckLoginStatus(await getAsync<_i877.AuthRepository>()));
-    gh.factoryAsync<_i666.GetCurrentUser>(() async =>
-        _i666.GetCurrentUser(await getAsync<_i877.AuthRepository>()));
-    gh.factoryAsync<_i911.Logout>(
-        () async => _i911.Logout(await getAsync<_i877.AuthRepository>()));
-    gh.factoryAsync<_i349.PrepareCaptcha>(() async =>
-        _i349.PrepareCaptcha(await getAsync<_i877.AuthRepository>()));
-    gh.factoryAsync<_i706.AuthBloc>(() async => _i706.AuthBloc(
-          prepareCaptcha: await getAsync<_i349.PrepareCaptcha>(),
-          login: await getAsync<_i466.Login>(),
-          logout: await getAsync<_i911.Logout>(),
-          checkLoginStatus: await getAsync<_i605.CheckLoginStatus>(),
-          getCurrentUser: await getAsync<_i666.GetCurrentUser>(),
+    gh.factory<_i605.CheckLoginStatus>(
+        () => _i605.CheckLoginStatus(gh<_i877.AuthRepository>()));
+    gh.factory<_i666.GetCurrentUser>(
+        () => _i666.GetCurrentUser(gh<_i877.AuthRepository>()));
+    gh.factory<_i466.Login>(() => _i466.Login(gh<_i877.AuthRepository>()));
+    gh.factory<_i911.Logout>(() => _i911.Logout(gh<_i877.AuthRepository>()));
+    gh.factory<_i349.PrepareCaptcha>(
+        () => _i349.PrepareCaptcha(gh<_i877.AuthRepository>()));
+    gh.factory<_i706.AuthBloc>(() => _i706.AuthBloc(
+          prepareCaptcha: gh<_i349.PrepareCaptcha>(),
+          login: gh<_i466.Login>(),
+          logout: gh<_i911.Logout>(),
+          checkLoginStatus: gh<_i605.CheckLoginStatus>(),
+          getCurrentUser: gh<_i666.GetCurrentUser>(),
         ));
     return this;
   }

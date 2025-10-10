@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
+// import 'package:injectable/injectable.dart'; // Not needed - registered manually
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
@@ -10,7 +10,8 @@ import 'interceptors/logging_interceptor.dart';
 
 /// Custom HTTP client wrapping Dio
 /// Replacement for CustomHttpClient.java in legacy app
-@singleton
+/// NOTE: HttpClient is now registered manually in injection_container.dart
+/// to avoid async dependency chain with CookieJar
 class HttpClient {
   late final Dio _dio;
   final CookieJar _cookieJar;
