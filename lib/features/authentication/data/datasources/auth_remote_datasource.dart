@@ -25,33 +25,20 @@ class AuthRemoteDataSource {
         throw ServerException('Base URL not configured');
       }
 
-      // Step 1: Create captcha session
-      print('[AuthRemoteDataSource] Requesting captcha session from: $baseUrl/plugin/kcaptcha/kcaptcha_session.php');
-      final sessionResponse = await httpClient.post(
-        '$baseUrl/plugin/kcaptcha/kcaptcha_session.php',
-        data: FormData.fromMap({}),
-      );
-
-      print('[AuthRemoteDataSource] Session response status: ${sessionResponse.statusCode}');
-
       // Extract PHPSESSID cookie from CookieJar (not from headers)
       // CookieManager intercepts Set-Cookie headers automatically
       final uri = Uri.parse(baseUrl);
       final cookies = await httpClient.getCookies(uri);
 
-      print('[AuthRemoteDataSource] Cookies from CookieJar: ${cookies.map((c) => '${c.name}=${c.value}').toList()}');
-
       String sessionCookie = '';
       for (final cookie in cookies) {
         if (cookie.name == 'PHPSESSID') {
           sessionCookie = cookie.value;
-          print('[AuthRemoteDataSource] Found PHPSESSID: $sessionCookie');
           break;
         }
       }
 
       if (sessionCookie.isEmpty) {
-        print('[AuthRemoteDataSource] ERROR: No PHPSESSID cookie found in CookieJar');
         throw ServerException('Failed to get session cookie. Please check Base URL and server availability.');
       }
 
