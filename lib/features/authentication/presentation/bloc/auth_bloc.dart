@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -18,6 +19,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final GetCurrentUser getCurrentUser;
 
   String? _currentSessionCookie;
+  Uint8List? _currentCaptchaImage;
+  int? _currentTimestamp;
 
   AuthBloc({
     required this.prepareCaptcha,
@@ -44,7 +47,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (failure) => emit(AuthCaptchaError(failure.message)),
       (captchaData) {
+        // Store captcha data for later use (especially on login error)
         _currentSessionCookie = captchaData.sessionCookie;
+        _currentCaptchaImage = captchaData.imageBytes;
+        _currentTimestamp = captchaData.timestamp;
+
         emit(AuthCaptchaLoaded(
           captchaImage: captchaData.imageBytes,
           sessionCookie: captchaData.sessionCookie,
@@ -73,9 +80,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     ));
 
     result.fold(
-      (failure) => emit(AuthLoginError(failure.message)),
+      (failure) {
+        // Preserve captcha on login failure so user can retry
+        emit(AuthLoginError(
+          failure.message,
+          captchaImage: _currentCaptchaImage,
+          sessionCookie: _currentSessionCookie,
+          timestamp: _currentTimestamp,
+        ));
+      },
       (user) {
-        _currentSessionCookie = null; // Clear session after successful login
+        // Clear all captcha data after successful login
+        _currentSessionCookie = null;
+        _currentCaptchaImage = null;
+        _currentTimestamp = null;
         emit(AuthAuthenticated(user));
       },
     );

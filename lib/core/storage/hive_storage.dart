@@ -1,10 +1,12 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:injectable/injectable.dart';
+// import 'package:injectable/injectable.dart'; // Not needed - registered manually
 import '../constants/app_constants.dart';
+import '../../features/authentication/data/models/user_model.dart';
 
 /// Hive-based local storage for complex objects
 /// Used for offline manga data, download queue, etc.
-@singleton
+/// NOTE: HiveStorage is now registered manually in injection_container.dart
+/// to ensure proper initialization before other dependencies use it
 class HiveStorage {
   late Box _mainBox;
   bool _initialized = false;
@@ -15,8 +17,10 @@ class HiveStorage {
 
     await Hive.initFlutter();
 
-    // Register adapters here when needed
-    // Example: Hive.registerAdapter(MangaAdapter());
+    // Register adapters
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(UserModelAdapter());
+    }
 
     _mainBox = await Hive.openBox(AppConstants.storageBoxName);
     _initialized = true;

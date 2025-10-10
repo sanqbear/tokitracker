@@ -68,6 +68,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(user);
     } on AuthenticationException catch (e) {
       return Left(AuthenticationFailure(e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } on NetworkException catch (e) {

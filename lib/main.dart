@@ -19,8 +19,8 @@ void main() async {
     storage: FileStorage('${appDocDir.path}/.cookies/'),
   );
 
-  // Configure dependency injection with pre-initialized CookieJar
-  await configureDependencies(cookieJar);
+  // Configure dependency injection with pre-initialized instances
+  await configureDependencies(hiveStorage, cookieJar);
 
   runApp(const MyApp());
 }

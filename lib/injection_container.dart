@@ -5,6 +5,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'injection_container.config.dart';
 import 'config/routes/app_router.dart';
 import 'core/storage/local_storage.dart';
+import 'core/storage/hive_storage.dart';
 import 'core/network/http_client.dart';
 
 /// Service Locator instance
@@ -14,13 +15,17 @@ final sl = GetIt.instance;
 
 /// Configure dependency injection
 /// This must be called in main() before runApp()
+/// @param hiveStorage Pre-initialized HiveStorage instance
 /// @param cookieJar Pre-initialized CookieJar instance
 @InjectableInit(
   initializerName: 'init',
   preferRelativeImports: true,
   asExtension: true,
 )
-Future<void> configureDependencies(CookieJar cookieJar) async {
+Future<void> configureDependencies(HiveStorage hiveStorage, CookieJar cookieJar) async {
+  // Register HiveStorage manually (initialized in main.dart)
+  sl.registerSingleton<HiveStorage>(hiveStorage);
+
   // Register CookieJar manually (initialized in main.dart)
   sl.registerSingleton<CookieJar>(cookieJar);
 

@@ -26,28 +26,33 @@ class AuthRemoteDataSource {
       }
 
       // Step 1: Create captcha session
+      print('[AuthRemoteDataSource] Requesting captcha session from: $baseUrl/plugin/kcaptcha/kcaptcha_session.php');
       final sessionResponse = await httpClient.post(
         '$baseUrl/plugin/kcaptcha/kcaptcha_session.php',
         data: FormData.fromMap({}),
       );
 
-      // Extract PHPSESSID cookie
-      String sessionCookie = '';
-      final setCookieHeaders = sessionResponse.headers['set-cookie'];
+      print('[AuthRemoteDataSource] Session response status: ${sessionResponse.statusCode}');
 
-      if (setCookieHeaders != null) {
-        for (final cookie in setCookieHeaders) {
-          if (cookie.contains('PHPSESSID=')) {
-            final startIndex = cookie.indexOf('PHPSESSID=') + 10;
-            final endIndex = cookie.indexOf(';', startIndex);
-            sessionCookie = cookie.substring(startIndex, endIndex);
-            break;
-          }
+      // Extract PHPSESSID cookie from CookieJar (not from headers)
+      // CookieManager intercepts Set-Cookie headers automatically
+      final uri = Uri.parse(baseUrl);
+      final cookies = await httpClient.getCookies(uri);
+
+      print('[AuthRemoteDataSource] Cookies from CookieJar: ${cookies.map((c) => '${c.name}=${c.value}').toList()}');
+
+      String sessionCookie = '';
+      for (final cookie in cookies) {
+        if (cookie.name == 'PHPSESSID') {
+          sessionCookie = cookie.value;
+          print('[AuthRemoteDataSource] Found PHPSESSID: $sessionCookie');
+          break;
         }
       }
 
       if (sessionCookie.isEmpty) {
-        throw ServerException('Failed to get session cookie');
+        print('[AuthRemoteDataSource] ERROR: No PHPSESSID cookie found in CookieJar');
+        throw ServerException('Failed to get session cookie. Please check Base URL and server availability.');
       }
 
       // Step 2: Get captcha image

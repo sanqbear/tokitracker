@@ -50,7 +50,6 @@ extension GetItInjectableX on _i174.GetIt {
     final storageModule = _$StorageModule();
     final dioModule = _$DioModule();
     gh.singleton<_i238.FileManager>(() => _i238.FileManager());
-    gh.singleton<_i355.HiveStorage>(() => _i355.HiveStorage());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => storageModule.provideSharedPreferences(),
       preResolve: true,

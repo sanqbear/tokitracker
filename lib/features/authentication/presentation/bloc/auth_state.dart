@@ -75,11 +75,19 @@ class AuthLoginInProgress extends AuthState {
 /// Login error state
 class AuthLoginError extends AuthState {
   final String message;
+  final Uint8List? captchaImage;
+  final String? sessionCookie;
+  final int? timestamp;
 
-  const AuthLoginError(this.message);
+  const AuthLoginError(
+    this.message, {
+    this.captchaImage,
+    this.sessionCookie,
+    this.timestamp,
+  });
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, captchaImage, sessionCookie, timestamp];
 }
 
 /// Logout in progress state

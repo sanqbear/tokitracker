@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../injection_container.dart';
+import '../../../../config/routes/route_paths.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -29,7 +31,7 @@ class LoginPage extends StatelessWidget {
                   backgroundColor: Colors.green,
                 ),
               );
-              Navigator.of(context).pushReplacementNamed('/home');
+              context.go(RoutePaths.home);
             } else if (state is AuthLoginError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -83,6 +85,7 @@ class LoginPage extends StatelessWidget {
               );
             }
 
+            // Show login form for CaptchaLoaded, LoginInProgress, and LoginError states
             return const SingleChildScrollView(
               padding: EdgeInsets.all(16.0),
               child: LoginForm(),

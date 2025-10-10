@@ -114,14 +114,21 @@ class _LoginFormState extends State<LoginForm> {
           // Captcha image
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              if (state is AuthCaptchaLoaded) {
+              // Show captcha for both loaded and error states
+              final captchaImage = state is AuthCaptchaLoaded
+                  ? state.captchaImage
+                  : state is AuthLoginError
+                      ? state.captchaImage
+                      : null;
+
+              if (captchaImage != null) {
                 return Card(
                   child: Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.memory(
-                          state.captchaImage,
+                          captchaImage,
                           height: 100,
                           fit: BoxFit.contain,
                         ),
