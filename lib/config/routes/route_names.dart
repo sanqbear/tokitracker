@@ -14,8 +14,10 @@ class RouteNames {
   // Main
   static const String home = 'home';
 
-  // Manga
-  static const String mangaDetail = 'manga-detail';
+  // Manga/Title
+  static const String comicDetail = 'comic-detail';
+  static const String webtoonDetail = 'webtoon-detail';
+  static const String mangaDetail = 'manga-detail'; // Deprecated - use comicDetail or webtoonDetail
   static const String episodeList = 'episode-list';
   static const String comments = 'comments';
 

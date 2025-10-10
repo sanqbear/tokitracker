@@ -52,6 +52,11 @@ dependencies:
   # HTML Parsing
   html: ^0.15.4
 
+  # WebView (for Captcha)
+  webview_flutter: ^4.4.2
+  webview_flutter_android: ^3.12.1
+  webview_flutter_wkwebview: ^3.9.4
+
   # Image
   cached_network_image: ^3.3.1
   photo_view: ^0.14.0

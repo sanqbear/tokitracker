@@ -14,8 +14,10 @@ class RoutePaths {
   // Main
   static const String home = '/home';
 
-  // Manga
-  static const String mangaDetail = '/manga/:id';
+  // Manga/Title
+  static const String comicDetail = '/comic/:id';
+  static const String webtoonDetail = '/webtoon/:id';
+  static const String mangaDetail = '/manga/:id'; // Deprecated - use comicDetail or webtoonDetail
   static const String episodeList = '/manga/:id/episodes';
   static const String comments = '/manga/:id/comments';
 

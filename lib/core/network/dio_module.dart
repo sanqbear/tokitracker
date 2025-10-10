@@ -2,7 +2,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:injectable/injectable.dart';
 // import 'package:path_provider/path_provider.dart'; // Moved to main.dart
-import 'package:dio/dio.dart';
 
 /// Dio and related dependencies module
 @module

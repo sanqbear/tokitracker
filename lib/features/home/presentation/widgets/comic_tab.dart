@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
@@ -68,17 +69,12 @@ class ComicTab extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         itemCount: state.data.recentManga.length,
                         itemBuilder: (context, index) {
+                          final episode = state.data.recentManga[index];
                           return EpisodeCard(
-                            episode: state.data.recentManga[index],
+                            episode: episode,
                             onTap: () {
-                              // TODO: Navigate to episode viewer
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    '에피소드: ${state.data.recentManga[index].name}',
-                                  ),
-                                ),
-                              );
+                              // Navigate to title detail page
+                              context.go('/comic/${episode.id}');
                             },
                           );
                         },
@@ -106,12 +102,8 @@ class ComicTab extends StatelessWidget {
                           title: rankedItem.item.name,
                           subtitle: rankedItem.item.date,
                           onTap: () {
-                            // TODO: Navigate to episode viewer
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('에피소드: ${rankedItem.item.name}'),
-                              ),
-                            );
+                            // Navigate to title detail page
+                            context.go('/comic/${rankedItem.item.id}');
                           },
                         );
                       },
@@ -139,12 +131,8 @@ class ComicTab extends StatelessWidget {
                           subtitle: rankedItem.item.author,
                           thumbnailUrl: rankedItem.item.thumbnailUrl,
                           onTap: () {
-                            // TODO: Navigate to title detail
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('작품: ${rankedItem.item.name}'),
-                              ),
-                            );
+                            // Navigate to title detail page
+                            context.go('/comic/${rankedItem.item.id}');
                           },
                         );
                       },

@@ -25,6 +25,19 @@ class CaptchaInterceptor extends Interceptor {
       }
     }
 
+    // Check for 403 Forbidden (may also indicate captcha)
+    if (response.statusCode == 403) {
+      handler.reject(
+        DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          error: CaptchaRequiredException('Captcha required (403 Forbidden)'),
+          type: DioExceptionType.badResponse,
+        ),
+      );
+      return;
+    }
+
     // Check response body for captcha indicators
     if (response.data is String) {
       final body = response.data as String;

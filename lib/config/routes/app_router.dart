@@ -8,7 +8,10 @@ import '../../core/storage/local_storage.dart';
 import '../../features/authentication/presentation/pages/login_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/home/domain/entities/base_mode.dart';
 import '../../features/setup/presentation/pages/first_time_setup_page.dart';
+import '../../features/manga/presentation/pages/title_detail_page.dart';
+import '../../features/captcha/presentation/pages/captcha_page.dart';
 
 /// Application router configuration
 @singleton
@@ -46,8 +49,8 @@ class AppRouter {
         path: RoutePaths.captcha,
         name: RouteNames.captcha,
         builder: (context, state) {
-          final captchaUrl = state.uri.queryParameters['url'];
-          return _buildPlaceholder('Captcha: $captchaUrl');
+          final captchaUrl = state.uri.queryParameters['url'] ?? '';
+          return CaptchaPage(captchaUrl: captchaUrl);
         },
       ),
 
@@ -58,7 +61,33 @@ class AppRouter {
         builder: (context, state) => const HomePage(),
       ),
 
-      // Manga Detail
+      // Comic Detail
+      GoRoute(
+        path: RoutePaths.comicDetail,
+        name: RouteNames.comicDetail,
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return TitleDetailPage(
+            titleId: id,
+            baseMode: BaseMode.comic,
+          );
+        },
+      ),
+
+      // Webtoon Detail
+      GoRoute(
+        path: RoutePaths.webtoonDetail,
+        name: RouteNames.webtoonDetail,
+        builder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return TitleDetailPage(
+            titleId: id,
+            baseMode: BaseMode.webtoon,
+          );
+        },
+      ),
+
+      // Manga Detail (Deprecated - redirects based on query parameter)
       GoRoute(
         path: RoutePaths.mangaDetail,
         name: RouteNames.mangaDetail,

@@ -163,4 +163,46 @@ class LocalStorage {
   Future<bool> setFirstTimeCompleted() async {
     return await setBool('firstTime', false);
   }
+
+  /// Get user cookie (sessionCookie from User entity)
+  String? getUserCookie() {
+    return getString('sessionCookie');
+  }
+
+  /// Set user cookie
+  Future<bool> setUserCookie(String cookie) async {
+    return await setString('sessionCookie', cookie);
+  }
+
+  /// Get username
+  String? getUsername() {
+    return getString('username');
+  }
+
+  /// Set username
+  Future<bool> setUsername(String username) async {
+    return await setString('username', username);
+  }
+
+  /// Check if user is logged in (has valid session cookie)
+  bool isLoggedIn() {
+    final cookie = getUserCookie();
+    return cookie != null && cookie.isNotEmpty;
+  }
+
+  /// Clear user session
+  Future<void> clearUserSession() async {
+    await remove('sessionCookie');
+    await remove('username');
+  }
+
+  /// Get user agent
+  String? getUserAgent() {
+    return getString('userAgent');
+  }
+
+  /// Set user agent
+  Future<bool> setUserAgent(String userAgent) async {
+    return await setString('userAgent', userAgent);
+  }
 }
